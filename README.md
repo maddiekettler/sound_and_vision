@@ -1,4 +1,4 @@
-#sound_and_vision
+# sound_and_vision
 
 Visual and Audio project for ARTS 4090: Art & Code & Interactivity at Rensselaer
 Polytechnic Institute.
