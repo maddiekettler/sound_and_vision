@@ -1,9 +1,10 @@
 #include "ofApp.h"
 
 Cloud::Cloud() {
-	cloudCenter = ofPoint(ofGetWidth() / 2, ofGetHeight() / 2);
+	cloudCenter = ofPoint(ofGetWidth()/2, ofGetHeight()/2);
 }
 
+//init function generates the particles and puts them in the particles vector
 void Cloud::init(int partNum) {
 	
 	ofColor color;
@@ -14,8 +15,8 @@ void Cloud::init(int partNum) {
 		position.x = cloudCenter.x - ofRandom(-100.0, 100.0);
 		position.y = cloudCenter.y - ofRandom(-200.0, 200.0);
 
-		velocity.x = ofRandom(-2.0, 2.0);
-		velocity.y = ofRandom(-2.0, 2.0);
+		velocity.x = 2.0;
+		velocity.y = 2.0;
 
 		force = ofPoint(0, 0, 0);
 
@@ -36,101 +37,74 @@ void Cloud::init(int partNum) {
 void Cloud::drawCloud() {
 	for (int i = 0; i < particles.size(); i++) {
 		ofSetColor(particles[i].color);
-		ofDrawCircle(particles[i].position.x, particles[i].position.y, 10);
+		ofDrawRectangle(particles[i].position, 10, 10);
 	}
 }
 
 void Cloud::update() {
-	
+	float drag = ofRandom(0.95, 0.999);
+	//particle attract code largely based on code written in particleExample in math example for openframeworks
+	// with some edits to work for my project
 	for (int i = 0; i < particles.size(); i++) {
+		
+		particles[i].force = cloudCenter - particles[i].position;
+		//scale vector down so you just have direction of the force
+		particles[i].force.normalize();
 
-		if ((particles[i].position.x > cloudCenter.x + 180.0) || (particles[i].position.y > cloudCenter.x - 250.0)) {
-			particles[i].velocity.x = -particles[i].velocity.x;
-			particles[i].velocity.y = -particles[i].velocity.y;
-		}
-		else if ((particles[i].position.x > cloudCenter.x - 180.0) || (particles[i].position.y > cloudCenter.x - 250.0)) {
-			particles[i].velocity.x = -particles[i].velocity.x;
-			particles[i].velocity.y = -particles[i].velocity.y;
-		}
+		particles[i].velocity *= drag;
+		particles[i].velocity += particles[i].force * 0.6;
 
-		ofPoint positionPrev = particles[i].position;
-		particles[i].force = cloudCenter - positionPrev;
-		particles[i].force = particles[i].force.normalize(); //gets direction of the force
-		particles[i].velocity = particles[i].force;
-		particles[i].position.x += particles[i].velocity.x;
-		particles[i].position.y += particles[i].velocity.y;
+		particles[i].position += particles[i].velocity;
 	}
 }
 //--------------------------------------------------------------
 void ofApp::setup() {
 	ofSetBackgroundColor(ofColor::black);
-	cloud.init(15);
+	cloud.init(500);
+
+	fft.setup(1024);
+	std::cout << fft.getBins().size() << std::endl;
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	fft.update();
+	// if sound is playing, make particles repel
+	float soundVal = fft.getBins()[20];
+	if (soundVal > 0.5) {
+		float drag = ofRandom(0.95, 0.999);
+		//particle repel code largely based on code written in particleExample in math example for openframeworks
+		// with some edits to work for my project
+		for (int i = 0; i < cloud.particles.size(); i++) {
+			//conditionals used to keep particles in the bounds of the window
+			if (cloud.particles[i].position.x > ofGetWidth()) {
+				cloud.particles[i].position.x = ofGetWidth() - 50;
+				//cloud.particles[i].velocity *= -1.0;
+			} else if (cloud.particles[i].position.y > ofGetHeight()) {
+				cloud.particles[i].position.y = ofGetHeight() - 50;
+				//cloud.particles[i].velocity *= -1.0;
+			} else if (cloud.particles[i].position.x < 0) {
+				cloud.particles[i].position.x = 50;
+			} else if (cloud.particles[i].position.y < 0) {
+				cloud.particles[i].position.y = 50;
+			}
+			cloud.particles[i].force = cloud.cloudCenter - cloud.particles[i].position;
+			//scale vector down so you just have direction of the force
+			cloud.particles[i].force.normalize();  
+			//apply drag
+			cloud.particles[i].velocity *= drag;
+			//for particles to repel, force must be negative
+			cloud.particles[i].velocity += -cloud.particles[i].force * 0.6; 
 
+			cloud.particles[i].position += cloud.particles[i].velocity;
+		}
+	// no sound is playing, call cloud.update()
+	} else {
+		cloud.update();
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
 	cloud.drawCloud();
 }
-
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ) {
-	
-	
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo) { 
-
-}
-
-
