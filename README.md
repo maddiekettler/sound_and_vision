@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #sound_and_vision
 
 Visual and Audio project for ARTS 4090: Art & Code & Interactivity at Rensselaer
@@ -26,3 +27,7 @@ from his album "Low", originally released 14 January 1977.
 https://youtu.be/gYtDhfR2t2Y
 
 All code written using openFrameworks for Visual Studio 2015.
+=======
+# sound_and_vision
+Project 1 for Art &amp; Code &amp; Interactivity
+>>>>>>> 94c2b77f0b4a6a6dfeebd1bc3036278edfbb77f4
