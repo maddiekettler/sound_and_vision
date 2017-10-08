@@ -63,7 +63,6 @@ void ofApp::setup() {
 	cloud.init(500);
 
 	fft.setup(1024);
-	std::cout << fft.getBins().size() << std::endl;
 }
 
 //--------------------------------------------------------------
