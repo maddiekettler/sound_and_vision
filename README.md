@@ -1,4 +1,4 @@
-# sound_and_vision
+# Sound and Vision
 
 Visual and Audio project for ARTS 4090: Art & Code & Interactivity at Rensselaer
 Polytechnic Institute.
@@ -16,9 +16,9 @@ every system, but my volume was between 25% and 50% when I tested it (I used the
 speakers on my Lenovo ThinkPad W541).
 
 Feel free to test the program with whatever songs you choose, and to also modify
-the number of particles in the setup() function (I set it to 500) as well as the
-size and shape of the particles (which can be modified in the cloudDraw()
-function).
+the number of particles in the setup() function (default is 500, I've tested it
+with 1000 particles and it's visually interesting) as well as the size and shape
+of the particles (which can be modified in the cloudDraw() function).
 
 Title, "Sound and Vision" inspired by the song with the same name by David Bowie
 from his album "Low", originally released 14 January 1977.
