@@ -63,6 +63,19 @@ void ofApp::setup() {
 	cloud.init(500);
 
 	fft.setup(1024);
+<<<<<<< HEAD
+=======
+
+	songButton.addListener(this, &ofApp::songPressed);
+	song2Button.addListener(this, &ofApp::song2Pressed);
+
+	gui.setup();
+	gui.add(songButton.setup("Sound and Vision"));
+	gui.add(song2Button.setup("Sound and Color"));
+
+	song.load("soundandvision.mp3");
+	song2.load("soundandcolor.mp3");
+>>>>>>> Implemented OfxGui, users can choose between two songs (located in bin/data)
 }
 
 //--------------------------------------------------------------
@@ -70,7 +83,11 @@ void ofApp::update() {
 	fft.update();
 	// if sound is playing, make particles repel
 	float soundVal = fft.getBins()[20];
+<<<<<<< HEAD
 	if (soundVal > 0.5) {
+=======
+	if (soundVal > 0.8) {
+>>>>>>> Implemented OfxGui, users can choose between two songs (located in bin/data)
 		float drag = ofRandom(0.95, 0.999);
 		//particle repel code largely based on code written in particleExample in math example for openframeworks
 		// with some edits to work for my project
@@ -105,5 +122,24 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+<<<<<<< HEAD
 	cloud.drawCloud();
+=======
+	gui.draw();
+	cloud.drawCloud();
+}
+
+void ofApp::songPressed() {
+	song2.stop();
+	if (!song.isPlaying()) {
+		song.play();
+	}
+}
+
+void ofApp::song2Pressed() {
+	song.stop();
+	if (!song2.isPlaying()) {
+		song2.play();
+	}
+>>>>>>> Implemented OfxGui, users can choose between two songs (located in bin/data)
 }
