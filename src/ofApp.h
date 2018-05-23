@@ -2,10 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxEasyFft.h"
-<<<<<<< HEAD
-=======
 #include "ofxGui.h"
->>>>>>> Implemented OfxGui, users can choose between two songs (located in bin/data)
 
 class Cloud {
 	struct particle {
@@ -33,10 +30,10 @@ public:
 	void update();
 	void draw();
 
-<<<<<<< HEAD
+
 	Cloud cloud;
 	ofxEasyFft fft;
-=======
+
 	void songPressed();
 	void song2Pressed();
 
@@ -49,6 +46,5 @@ public:
 	ofxPanel gui;
 	ofxButton songButton;
 	ofxButton song2Button;
->>>>>>> Implemented OfxGui, users can choose between two songs (located in bin/data)
 };
 
